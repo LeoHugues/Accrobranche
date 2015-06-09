@@ -1,0 +1,60 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Connection</title>
+        <link type="text/css" rel="stylesheet" href="{{ "./themeBootstrap.css" }}" />
+    </head>
+
+    <body>
+    <div class="container">
+        <h1>Connection à l'application de getion des EPI</h1><br>
+        <div class="well form-block">
+            <form action="{{ path("fos_user_security_check") }}" method="post" class="form-horizontal">
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="username">{{ 'security.login.username'|trans }}</label>
+                    <div class="col-sm-9">
+                        <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="password">{{ 'security.login.password'|trans }}</label>
+                    <div class="col-sm-9">
+                        <input type="password" id="password" name="_password" required="required" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-offset-2 col-sm-9">
+                        <div class="checkbox">
+                            <label class="col-sm-2 control-label" for="remember_me">
+                                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                                {{ 'security.login.remember_me'|trans }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}">Connexion</button>
+                    </div>
+                </div>
+
+                {% if error %}
+                    <div class="alert alert-dismissable alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+            </form>
+        </div>
+    </div>
+    </body>
+</html>

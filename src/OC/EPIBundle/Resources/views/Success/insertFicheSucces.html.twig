@@ -1,0 +1,11 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="bs-component" data-relatedvars="jumbotron-padding,jumbotron-color,jumbotron-bg,jumbotron-heading-color,jumbotron-font-size">
+        <div class="jumbotron">
+            <h1>Ajout réussi {{ app.user.prenom }} !</h1>
+            <p>La nouvelle fiche de vie a bien était enregistré .</p>
+            <p><a href="{{ path("oc_epi_index") }}" class="btn btn-primary btn-lg">Accueil</a></p>
+        </div>
+    </div>
+{% endblock %}

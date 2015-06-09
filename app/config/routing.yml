@@ -1,0 +1,16 @@
+oc_user:
+    resource: "@OCUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+ocepi:
+    resource: "@OCEPIBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

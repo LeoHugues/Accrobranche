@@ -1,0 +1,9 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <h1>Ajouter un équipement :</h1><br>
+    <div class="well">
+        {{ form_start(form, {attr: {novalidate: 'novalidate'} }) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

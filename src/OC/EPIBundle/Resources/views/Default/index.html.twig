@@ -1,0 +1,188 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+
+    {% for flashMessage in app.session.flashbag.get("warning") %}
+        <div class="alert alert-dismissable alert-warning">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Attention !</h4>
+            <p>
+                {{ flashMessage }}
+            </p>
+        </div>
+    {% endfor %}
+
+    {% for flashMessage in app.session.flashbag.get("notice") %}
+        <div class="alert alert-dismissable alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <h1>Page de gestion des EPI</h1><br>
+    <div class="well col-lg-12 container">
+        <div class="row row-centered">
+            <div class="col-xs-5 pull-left col-centered">
+                <h2 id="nav-tabs">Fiches de vies : Les derniers contrôles</h2>
+            </div>
+            <div class="col-xs-6 pull-right text-right col-centered">
+                <h3 class="col-xs-10 text-right">Nouvelle fiche de vie : </h3>
+                <a href="{{ path("oc_epi_insert_ficheDeVie") }}">
+                    <span class="glyphicon glyphicon-plus btn btn-success btn-lg pull-right"></span>
+                </a>
+            </div>
+        </div>
+        <div class="bs-componentr">
+            <ul class="nav nav-tabs">
+                {% set first = true %}
+                {% for fiche in fiches %}
+                    <li {% if first == true %}class= "active"{% endif %}>
+                        <a href="#{{ fiche.id }}" data-toggle="tab" aria-expanded="true">
+                            {{ fiche.modele | upper }} {{ fiche.fabriquant }}
+                            <span class="badge">{{ fiche.equipements |length }}</span>
+                        </a>
+                    </li>
+                    {% set first = false %}
+                {% endfor %}
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                {% set first = true %}
+                {% for fiche in fiches %}
+                    <div class="tab-pane fade {% if first == true %}active in{% endif %}" id="{{ fiche.id }}">
+                        {% set first = false %}
+                        <table class="table table-striped">
+                            {% if fiche.equipements|length > 0 and fiche.equipements|length != null %}
+                            <thead>
+                            <tr>
+                                <th>Num interne</th>
+                                <th>Num série</th>
+                                <th>Sangles</th>
+                                <th>Coutures</th>
+                                <th>Marquages</th>
+                                <th>Longes</th>
+                                <th>Mousquetons</th>
+                                <th>Date</th>
+                                <th>Remarque</th>
+                                <th>Gestion equipement</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for equipement  in fiche.equipements %}
+                                    <tr>
+                                        <td>{{ equipement.numInterne }}</td>
+                                        <td>{{ equipement.numSerie }}</td>
+                                        {% if equipement.controles| length > 0 and equipement.controles| length != null %}
+                                            {% for controle in equipement.controles %}
+                                                <td>{{ controle.sangle }}</td>
+                                                <td>{{ controle.couture }}</td>
+                                                <td>{{ controle.marquage }}</td>
+                                                <td>{{ controle.longes }}</td>
+                                                <td>{{ controle.mousqueton }}</td>
+                                                <td>{{ controle.dateControle |date("d/m/Y")  }}</td>
+                                                <td>{{ controle.remarque }}</td>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                            <td> - </td>
+                                        {% endif %}
+                                        <td>
+                                            <div class="row-centered">
+                                                <div class="col-centered">
+                                                    <a href="{{ path("oc_epi_gestion_equipement", {'id': equipement.id}) }}">
+                                                        <span class="glyphicon glyphicon-eye-open btn btn-primary btn-xs"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-centered">
+                                                    <a href="{{ path("oc_epi_update_equipement", {'id': equipement.id}) }}">
+                                                        <span class="glyphicon glyphicon-wrench btn btn-warning btn-xs"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-centered">
+                                                    <a data-toggle="modal" data-target="#myModal">
+                                                        <span data-url="{{ path("oc_epi_remove_equipement", {'id': equipement.id }) }}" class="glyphicon glyphicon-remove btn btn-danger btn-xs btn-remove-equipement"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            {% else %}
+                                <br>
+                                <div class="alert alert-dismissable alert-info">
+                                    Il n'y a pour le moment aucun équipement associé à cette fiche de vie.
+                                </div>
+                            {% endif %}
+                        </table>
+                        <div class="row row-centered col-xs-12">
+                            <div class="col-centered pull-left">
+                                <h3>Gestion de la fiche de vie :</h3>
+                            </div>
+                            <div class="col-centered pull-right">
+                                <a data-toggle="modal" data-target="#myModal">
+                                    <span data-url="{{ path("oc_epi_remove_fiche", {'id': fiche.id }) }}" class="glyphicon glyphicon-remove btn btn-danger btn-lg btn-remove-fiche"></span>
+                                </a>
+                            </div>
+                            <div class="col-centered pull-right">
+                                <a href="{{ path("oc_epi_update_fiche", { 'id': fiche.id }) }}">
+                                    <span class="glyphicon glyphicon-wrench btn btn-warning btn-lg"></span>
+                                </a>
+                            </div>
+                            <div class="col-centered pull-right">
+                                <a href="{{ path("oc_epi_insert_equipement") }}">
+                                    <span class="glyphicon glyphicon-plus btn btn-success btn-lg"></span>
+                                </a>
+                            </div>
+                            <div class="col-centered pull-right">
+                                <a href="{{ path("oc_epi_gestionFiche", { 'id': fiche.id }) }}">
+                                    <span class="glyphicon glyphicon-eye-open btn btn-primary btn-lg"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <a id="deleteConfirmation">
+                        <span class="btn btn-danger">Continuer</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('.btn-remove-equipement').click(function(){
+            var url = $(this).data('url');
+            $('#deleteConfirmation').prop('href', url);
+            $('h4.modal-title').html("Voulez vous vraiment supprimer l'équipement ?");
+            $(".modal-body p").html("Si vous supprimer l'équipement, vous perdrez également tous les contrôles qui ont été réalisés. Êtes vous certain de vouloir faire cela ?");
+        });
+
+        $(".btn-remove-fiche").click(function(){
+            var url = $(this).data('url');
+            $('#deleteConfirmation').prop('href', url);
+            $('h4.modal-title').html("Voulez vous vraiment supprimer la fiche de vie ?");
+            $(".modal-body p").html("Si vous supprimer la fiche de vie, tous les équipements et les contrôles qui y sont associé le seront également. Êtes vous certain de vouloir faire cela ?");
+        });
+    </script>
+{% endblock %}

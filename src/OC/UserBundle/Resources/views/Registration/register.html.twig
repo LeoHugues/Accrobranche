@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% if is_granted("ROLE_SUPER_ADMIN")%}
+        <div class="container">
+            <h1>Ajouter un nouvelle utilisateur</h1><br>
+            <div class="well form-block">
+                {% block fos_user_content %}
+                    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+                {% endblock fos_user_content %}
+            </div>
+        </div>
+    {% else %}
+        <div class="jumbotron">
+            <h1>Droit Insuffisant</h1>
+            <p>Vous devez être un administrateur pour pouvoir rajouter un compte sur l'application.</p>
+            <p><a class="btn btn-primary btn-lg" href="{{ path("oc_epi_index") }}">Retourner à l'accueil</a></p>
+        </div>
+    {% endif %}
+{% endblock %}
