@@ -127,78 +127,144 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        // website_default_index
+        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'website_default_index')), array (  '_controller' => 'WebSiteBundle\\Controller\\DefaultController::indexAction',));
+        }
+
+        // website_index
+        if (preg_match('#^/(?P<_locale>[^/]++)/?$#s', $pathinfo, $matches)) {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'website_index');
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'website_index')), array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::indexAction',));
+        }
+
+        // website_front_index
+        if (rtrim($pathinfo, '/') === '') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'website_front_index');
+            }
+
+            return array (  '_locale' => 'fr',  '_controller' => 'WebSiteBundle\\Controller\\FrontController::indexAction',  '_route' => 'website_front_index',);
+        }
+
+        // website_parcours
+        if (preg_match('#^/(?P<_locale>[^/]++)/parcours$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'website_parcours')), array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::parcoursAction',));
+        }
+
+        // website_front_parcours
+        if ($pathinfo === '/parcours') {
+            return array (  '_locale' => 'fr',  '_controller' => 'WebSiteBundle\\Controller\\FrontController::parcoursAction',  '_route' => 'website_front_parcours',);
+        }
+
+        // website_horaires
+        if (preg_match('#^/(?P<_locale>[^/]++)/horaires$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'website_horaires')), array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::horairesAction',));
+        }
+
+        // website_front_horaires
+        if ($pathinfo === '/horaires') {
+            return array (  '_locale' => 'fr',  '_controller' => 'WebSiteBundle\\Controller\\FrontController::horairesAction',  '_route' => 'website_front_horaires',);
+        }
+
+        // website_tarif
+        if ($pathinfo === '/tarif') {
+            return array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::tarifAction',  '_route' => 'website_tarif',);
+        }
+
+        // website_plan
+        if ($pathinfo === '/plan') {
+            return array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::planAction',  '_route' => 'website_plan',);
+        }
+
+        // website_contact
+        if ($pathinfo === '/contact') {
+            return array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::contactAction',  '_route' => 'website_contact',);
+        }
+
+        // website_lien
+        if ($pathinfo === '/lien') {
+            return array (  '_controller' => 'WebSiteBundle\\Controller\\FrontController::lienAction',  '_route' => 'website_lien',);
+        }
+
         // oc_user_default_index
         if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_user_default_index')), array (  '_controller' => 'OC\\UserBundle\\Controller\\DefaultController::indexAction',));
         }
 
-        // oc_epi_insert_controle
-        if (0 === strpos($pathinfo, '/insertControle') && preg_match('#^/insertControle/(?P<idFiche>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_insert_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::insertControleAction',));
-        }
-
-        // oc_epi_update_controle
-        if (0 === strpos($pathinfo, '/updateControle') && preg_match('#^/updateControle/(?P<idControle>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::updateControleAction',));
-        }
-
-        // oc_epi_remove_controle
-        if (0 === strpos($pathinfo, '/remove') && preg_match('#^/remove/(?P<id>[^/]++)/(?P<date>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::removeControles',));
-        }
-
-        // oc_epi_default_index
-        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_default_index')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\DefaultController::indexAction',));
-        }
-
-        // oc_epi_gestion_equipement
-        if (0 === strpos($pathinfo, '/gestionEquipement') && preg_match('#^/gestionEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_gestion_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::gestionEquipementAction',));
-        }
-
-        // oc_epi_insert_equipement
-        if ($pathinfo === '/insertEquipement') {
-            return array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::insertEquipementAction',  '_route' => 'oc_epi_insert_equipement',);
-        }
-
-        // oc_epi_update_equipement
-        if (0 === strpos($pathinfo, '/updateEquipement') && preg_match('#^/updateEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::updateEquipementAction',));
-        }
-
-        // oc_epi_remove_equipement
-        if (0 === strpos($pathinfo, '/removeEquipement') && preg_match('#^/removeEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::deleteEquipementAction',));
-        }
-
-        // oc_epi_index
-        if (rtrim($pathinfo, '/') === '') {
-            if (substr($pathinfo, -1) !== '/') {
-                return $this->redirect($pathinfo.'/', 'oc_epi_index');
+        if (0 === strpos($pathinfo, '/epi')) {
+            // oc_epi_insert_controle
+            if (0 === strpos($pathinfo, '/epi/insertControle') && preg_match('#^/epi/insertControle/(?P<idFiche>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_insert_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::insertControleAction',));
             }
 
-            return array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::indexAction',  '_route' => 'oc_epi_index',);
-        }
+            // oc_epi_update_controle
+            if (0 === strpos($pathinfo, '/epi/updateControle') && preg_match('#^/epi/updateControle/(?P<idControle>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::updateControleAction',));
+            }
 
-        // oc_epi_insert_ficheDeVie
-        if ($pathinfo === '/insertFiche') {
-            return array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::insertFicheDeVieAction',  '_route' => 'oc_epi_insert_ficheDeVie',);
-        }
+            // oc_epi_remove_controle
+            if (0 === strpos($pathinfo, '/epi/remove') && preg_match('#^/epi/remove/(?P<id>[^/]++)/(?P<date>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_controle')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\ControleController::removeControles',));
+            }
 
-        // oc_epi_update_fiche
-        if (0 === strpos($pathinfo, '/updateFiche') && preg_match('#^/updateFiche/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_fiche')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::updateFicheDeVieAction',));
-        }
+            // oc_epi_default_index
+            if (0 === strpos($pathinfo, '/epi/hello') && preg_match('#^/epi/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_default_index')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\DefaultController::indexAction',));
+            }
 
-        // oc_epi_remove_fiche
-        if (0 === strpos($pathinfo, '/removeFiche') && preg_match('#^/removeFiche/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_fiche')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::deleteFicheAction',));
-        }
+            // oc_epi_gestion_equipement
+            if (0 === strpos($pathinfo, '/epi/gestionEquipement') && preg_match('#^/epi/gestionEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_gestion_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::gestionEquipementAction',));
+            }
 
-        // oc_epi_gestionFiche
-        if (0 === strpos($pathinfo, '/gestionFiche') && preg_match('#^/gestionFiche/(?P<id>[^/]++)(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_gestionFiche')), array (  'page' => 1,  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::gestionFicheDeVie',));
+            // oc_epi_insert_equipement
+            if ($pathinfo === '/epi/insertEquipement') {
+                return array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::insertEquipementAction',  '_route' => 'oc_epi_insert_equipement',);
+            }
+
+            // oc_epi_update_equipement
+            if (0 === strpos($pathinfo, '/epi/updateEquipement') && preg_match('#^/epi/updateEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::updateEquipementAction',));
+            }
+
+            // oc_epi_remove_equipement
+            if (0 === strpos($pathinfo, '/epi/removeEquipement') && preg_match('#^/epi/removeEquipement/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_equipement')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\EquipementController::deleteEquipementAction',));
+            }
+
+            // oc_epi_index
+            if (rtrim($pathinfo, '/') === '/epi') {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($pathinfo.'/', 'oc_epi_index');
+                }
+
+                return array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::indexAction',  '_route' => 'oc_epi_index',);
+            }
+
+            // oc_epi_insert_ficheDeVie
+            if ($pathinfo === '/epi/insertFiche') {
+                return array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::insertFicheDeVieAction',  '_route' => 'oc_epi_insert_ficheDeVie',);
+            }
+
+            // oc_epi_update_fiche
+            if (0 === strpos($pathinfo, '/epi/updateFiche') && preg_match('#^/epi/updateFiche/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_update_fiche')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::updateFicheDeVieAction',));
+            }
+
+            // oc_epi_remove_fiche
+            if (0 === strpos($pathinfo, '/epi/removeFiche') && preg_match('#^/epi/removeFiche/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_remove_fiche')), array (  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::deleteFicheAction',));
+            }
+
+            // oc_epi_gestionFiche
+            if (0 === strpos($pathinfo, '/epi/gestionFiche') && preg_match('#^/epi/gestionFiche/(?P<id>[^/]++)(?:/(?P<page>[^/]++))?$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'oc_epi_gestionFiche')), array (  'page' => 1,  '_controller' => 'OC\\EPIBundle\\Controller\\FicheDeVieController::gestionFicheDeVie',));
+            }
+
         }
 
         // homepage

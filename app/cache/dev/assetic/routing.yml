@@ -2,4 +2,4 @@ _assetic:
     resource: .
     type: assetic
 _app:
-    resource: /var/www/Projets/OCWebsiteProject/src/OCWebApp/app/config/routing_dev.yml
+    resource: /home/leo/Documents/OCWebApp/app/config/routing_dev.yml

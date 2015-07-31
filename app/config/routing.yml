@@ -1,12 +1,17 @@
+web_site:
+    resource: "@WebSiteBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 oc_user:
     resource: "@OCUserBundle/Controller/"
     type:     annotation
     prefix:   /
 
 ocepi:
-    resource: "@OCEPIBundle/Controller/"
+    resource: "@OCEPIBundle/Controller"
+    prefix:   /epi
     type:     annotation
-    prefix:   /
 
 app:
     resource: "@AppBundle/Controller/"

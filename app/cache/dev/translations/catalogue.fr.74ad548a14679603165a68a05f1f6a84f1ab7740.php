@@ -185,6 +185,30 @@ L\'équipe.
     'form.new_password' => 'Nouveau mot de passe :',
     'form.new_password_confirmation' => 'Vérification :',
   ),
+  'header' => 
+  array (
+    'accueil' => 'accueil',
+    'parcours' => 'nos parcours',
+    'horaires.dates' => 'horaires et dates d\'ouverture',
+    'tarifs' => 'nos tarifs',
+    'plan' => 'plan d\'accès',
+    'contact' => 'contact',
+    'liens' => 'liens',
+  ),
+  'index' => 
+  array (
+    'oc.bienvenue' => 'OC\'AVENTURES Et Toute Son Équipe Vous Souhaite La Bienvenue',
+    'oc.hauteur' => 'PRENEZ DE LA HAUTEUR',
+    'nos.parcours' => 'NOS <strong> PARCOURS ACCROBRANCHE </strong>',
+    'accroche.nos.parcours' => 'A travers nos parcours accrobranche, découvrez de nouvelles sensations, des émotions oubliées, les odeurs de la pinède et le chant des cigales au pied du Pic Saint Loup.',
+    'parcours.adulte' => '7 PARCOURS ADULTES',
+    'parcours.adulte.desc' => 'Enchainement de 3 Tyroliennes Géantes 200m, 230m et 245m. Parcours ludiques et sportifs, pour 3h d\'activité.',
+    'parcours.enfant' => '5 PARCOURS ENFANTS (DÈS 4 OU 5 ANS)',
+    'parcours.enfant.desc' => 'Avec une tyrolienne de 80, 100 et 135 m, pour 3h00 d\'aventure en toute sécurité.',
+    'confort.title' => 'Et pour le <strong>confort de votre accueil</strong>',
+    'confort.terrasse' => 'Une buvette avec sa terrasse couverte et brumisée.',
+    'confort.pique.nique' => 'Une aire de pique-nique.',
+  ),
 ));
 
 

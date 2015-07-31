@@ -1,6 +1,5 @@
-{% extends "::base.html.twig" %}
-{% block body %}
-
+{% extends 'OCEPIBundle::base.html.twig' %}
+{% block content %}
     {% for flashMessage in app.session.flashbag.get("warning") %}
         <div class="alert alert-dismissable alert-warning">
             <button type="button" class="close" data-dismiss="alert">×</button>
